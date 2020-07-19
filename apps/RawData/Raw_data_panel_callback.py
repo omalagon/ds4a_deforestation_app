@@ -4,25 +4,31 @@ import datetime
 import dash
 import dash_table
 import pandas as pd
+import json
+import plotly.express as px
+import dash_core_components as dcc
 
 
 def register_callback(app):
     @app.callback(Output('raw_content', 'children'),
-                      [
-                          Input('raw_dane_es_po', 'n_clicks'),
-                          Input('raw_dane_cnd_2016_2018', 'n_clicks'),
-                          Input('raw_dane_cnd_2016', 'n_clicks'),
-                          Input('raw_dane_cnd_2017', 'n_clicks'),
-                          Input('raw_dane_cnd_2018', 'n_clicks'),
-                          Input('raw_CMH_AS_1981_2012', 'n_clicks'),
-                          Input('raw_CMH_SC_1970_2010', 'n_clicks'),
-                      ])
-    def display(raw_dane_es_po, raw_dane_cnd_2016_2018, raw_dane_cnd_2016, raw_dane_cnd_2017, raw_dane_cnd_2018,
-                raw_CMH_AS_1981_2012, raw_CMH_SC_1970_2010):
+              [
+                  Input('raw_geo', 'n_clicks'),
+                  Input('raw_dane_es_po', 'n_clicks'),
+                  Input('raw_dane_cnd_2016_2018', 'n_clicks'),
+                  Input('raw_dane_cnd_2016', 'n_clicks'),
+                  Input('raw_dane_cnd_2017', 'n_clicks'),
+                  Input('raw_dane_cnd_2018', 'n_clicks'),
+                  Input('raw_CMH_AS_1981_2012', 'n_clicks'),
+                  Input('raw_CMH_SC_1970_2010', 'n_clicks'),
+              ])
+    def display(raw_geo, raw_dane_es_po, raw_dane_cnd_2016_2018, raw_dane_cnd_2016, raw_dane_cnd_2017,
+                raw_dane_cnd_2018, raw_CMH_AS_1981_2012, raw_CMH_SC_1970_2010):
         print('->');
         ctx = dash.callback_context
         if ctx.triggered:
             caso = ctx.triggered[0]['prop_id'].split('.')[0]
+            if (caso == 'raw_geo'):
+                return dcc.Graph(figure=mapa)
             if (caso == 'raw_dane_es_po'):
                 return CreateTableFromFile("data/Dane/anexo-Estimaciones_de_Poblacion_2005-2017-Municipal.csv", '\t',
                                            'anexo-Estimaciones_de_Poblacion_2005-2017-Municipal');
@@ -65,3 +71,26 @@ def register_callback(app):
                 ], className="tablas scroll", ),
             ]
         );
+
+    with open('data/mapas/deforestacion-geo.json') as file:
+        jdatadeforestacion = json.load(file)
+
+    for k in range(len(jdatadeforestacion['features'])):
+        jdatadeforestacion['features'][k]['id'] = k
+    data = pd.json_normalize(jdatadeforestacion['features'])
+
+    data_municipios = data[['id', 'properties.MPIO_CNMBR', 'properties.MPIO_NAREA']]
+
+    mapa = px.choropleth_mapbox(data_municipios,  # Data
+                                locations='id',  # Column containing the identifiers used in the GeoJSON file
+                                color='properties.MPIO_NAREA',  # Column giving the color intensity of the region
+                                geojson=jdatadeforestacion,  # The GeoJSON file
+                                zoom=6,  # Zoom
+                                mapbox_style="carto-positron",
+                                # Mapbox style, for different maps you need a Mapbox account and a token
+                                center={"lat": 7.5, "lon": -75.133},  # Center
+                                color_continuous_scale="Viridis",  # Color Scheme
+                                opacity=0.5,  # Opacity of the map
+                                width=1000,
+                                height=800
+                                )
