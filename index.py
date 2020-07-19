@@ -70,4 +70,4 @@ def display_page(pathname):
         return Raw_data_panel.main
 
 if __name__ == "__main__":
-    landing.run_server(debug=True, port=8080)
+    landing.run_server()

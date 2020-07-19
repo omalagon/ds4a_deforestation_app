@@ -13,7 +13,6 @@ future==0.18.2
 gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.11.2
-MarkupSafe @ file:///opt/concourse/worker/volumes/live/cb778296-98db-45ad-411e-6f726e102dc3/volume/markupsafe_1594371638608/work
 numpy==1.19.0
 pandas==1.0.5
 plotly==4.9.0
