@@ -18,6 +18,7 @@ def set_indicator(indicator, data):
 main = dbc.Container(
     [
         dcc.Store(id="store"),
+        html.Br(),
         dbc.Tabs(
             [
                 dbc.Tab(label="Departamento", tab_id="depto"),
@@ -37,6 +38,7 @@ def get_connection():
                             dbname="team34_deforestation",
                             user="postgres",
                             password="oscarmalagon")
+
 
 # TODO: add button to force data refresh
 def register_callback(app):

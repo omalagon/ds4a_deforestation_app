@@ -11,10 +11,10 @@ import dash_html_components as html
 import dash_core_components as dcc
 from lib import menu
 from index import register_callback as register_index_callback
-from apps.RawData.Raw_data_panel_callback import register_callback as register_raw_data_callback
+from apps.RawData.Raw_data_panel import register_callback as register_raw_data_callback
 from apps.Analisys.Analisys_panel import register_callback as register_analysis_callback
 
-app = dash.Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets = [dbc.themes.FLATLY])
 server = app.server
 
 #We need this for function callbacks not present in the app.layout
