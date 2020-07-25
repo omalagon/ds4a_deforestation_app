@@ -40,7 +40,9 @@ main = dbc.Container(
         html.Div(id='page-content2'),
         html.Br(),
         html.H2("Visualizador"),
-        html.P("Seleccione el conjunto de datos que desea visualizar en el menú 'Datos'"),
+        html.P("Seleccione el conjunto de datos que desea visualizar en el menú 'Datos'. "),
+        dbc.Alert("Para los archivos no geográficos solo se muestra una parte del archivo, para más detalle lo puede "
+                  "descargar en el correspondiente enlace", color='warning'),
         html.Div(id='raw_content')
     ]
 )
