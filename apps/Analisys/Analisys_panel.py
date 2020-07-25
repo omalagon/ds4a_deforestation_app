@@ -4,6 +4,7 @@ import dash_html_components as html
 import pandas as pd
 import plotly.express as px
 import psycopg2
+import os
 from dash.dependencies import Input, Output
 
 # Indicators data is cached in order to avoid too many queries on the database
@@ -32,12 +33,11 @@ main = dbc.Container(
 )
 
 
-# TODO: use env variables
 def get_connection():
-    return psycopg2.connect(host="ds4a-demo-instance.cuhhesolnyxt.us-east-2.rds.amazonaws.com",
-                            dbname="team34_deforestation",
-                            user="postgres",
-                            password="oscarmalagon")
+    return psycopg2.connect(host=os.environ.get('DB_HOST'),
+                            dbname=os.environ.get('DB_NAME'),
+                            user=os.environ.get('DB_USER'),
+                            password=os.environ.get('DB_PSW'),)
 
 
 # TODO: add button to force data refresh
