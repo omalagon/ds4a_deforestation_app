@@ -5,7 +5,7 @@ main = html.Div(
     [
         html.Br(),
         html.Br(),
-        html.Br(),
+        html.Center(html.H1(html.Strong("Team 34"))),
         html.Br(),
         html.Br(),
         dbc.Row([
