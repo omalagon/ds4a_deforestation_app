@@ -63,12 +63,8 @@ main = html.Div(
                         dbc.CardBody(
                             [
                                 html.H4(html.Strong("Manuel Alfonso Saavedra Quintero")),
-                                html.P("Profesional en estadística y tecnólogo en desarrollo de software. Experiencia "
-                                       "en análisis multivariado, series de tiempo, métodos de clasificación, "
-                                       "generación de modelos predictivos, minería de datos, machine learning y "
-                                       "desarrollo de software; dirección de equipos de trabajo interdisciplinarios "
-                                       "en business analytics."),
-                                html.Br()
+                                html.P("Estadístico universidad Nacional, director Business analytics Sistemcobro."),
+                                html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),gi
                             ]
                         ),
                     ], color="secondary"
