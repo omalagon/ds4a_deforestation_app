@@ -64,7 +64,7 @@ main = html.Div(
                             [
                                 html.H4(html.Strong("Manuel Alfonso Saavedra Quintero")),
                                 html.P("Estadístico universidad Nacional, director Business analytics Sistemcobro."),
-                                html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),html.Br(),gi
+                                html.Br(), html.Br(), html.Br(), html.Br(), html.Br(), html.Br(), html.Br()
                             ]
                         ),
                     ], color="secondary"
