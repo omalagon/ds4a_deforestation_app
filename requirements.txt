@@ -24,3 +24,4 @@ Werkzeug==1.0.1
 boto3~=1.14.27
 pgspecial==1.11.10
 psycopg2==2.8.5
+geopandas~=0.6.1
