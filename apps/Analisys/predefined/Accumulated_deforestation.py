@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output
 import geopandas
 import json
 
-from apps.Analisys.department import Analysis_data_handler as data_h
+from apps.Analisys.predefined import Analysis_data_handler as data_h
 
 data_dic = {}
 

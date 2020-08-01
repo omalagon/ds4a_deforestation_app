@@ -2,8 +2,8 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-from apps.Analisys.department import Deforestation_level, Forest_loss, Accumulated_deforestation, Correlation
-from apps.Analisys.municipality import Dynamic_indicator_map as Dynamic_municipality_indicator_map
+from apps.Analisys.predefined import Deforestation_level, Forest_loss, Accumulated_deforestation, Correlation
+from apps.Analisys.detailed import Dynamic_indicator_map as Dynamic_municipality_indicator_map
 
 main = html.Div(
     [
@@ -15,7 +15,7 @@ main = html.Div(
                 dbc.Tab(label="Detalle indicadores", tab_id="detailed"),
             ],
             id="tabs",
-            active_tab="detailed",
+            active_tab="predefined",
         ),
         html.Div(id="tab-content", className="p-4"),
     ]
@@ -46,7 +46,7 @@ def register_callback(app):
             elif active_tab == "detailed":
                 rows = [
                     Dynamic_municipality_indicator_map.build_menu(),
-                    html.Div(id='municipality-output-map')
+                    html.Div(id='detailed-output-map')
                 ]
                 return html.Div(rows)
         return "No tab selected"

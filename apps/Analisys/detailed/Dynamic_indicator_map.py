@@ -7,8 +7,8 @@ from dash.dependencies import Input, Output, State
 import geopandas
 import json
 
-from apps.Analisys.municipality import Analysis_data_handler as data_h
-from apps.Analisys.department import Analysis_data_handler as data_h_depto
+from apps.Analisys.detailed import Analysis_data_handler as data_h
+from apps.Analisys.predefined import Analysis_data_handler as data_h_depto
 
 data_dic = {}
 selected_indicator = None
@@ -16,7 +16,7 @@ selected_indicator = None
 
 def build_departamentos_dropdown():
     return dcc.Dropdown(
-        id="dropdown-municipality-analysis-departamentos-filter",
+        id="dropdown-detailed-analysis-departamentos-filter",
         options=[{'label': depto['nombre'], 'value': depto['nombre']} for _, depto in
                  data_h.get_departamentos().iterrows()],
         placeholder="Seleccione los departamentos",
@@ -28,7 +28,7 @@ def build_departamentos_dropdown():
 
 def build_indicator_dropdown():
     return dcc.Dropdown(
-        id="dropdown-municipality-analysis-indicator-filter",
+        id="dropdown-detailed-analysis-indicator-filter",
         options=[{'label': ind['data_category'], 'value': ind['data_category']} for _, ind in
                  data_h.get_indicadores().iterrows()],
         placeholder="Seleccione el indicador",
@@ -41,9 +41,9 @@ def build_indicator_dropdown():
 def build_button():
     return dbc.Button(
         "Aplicar filtro",
-        id="button-municipality-analysis",
+        id="button-detailed-analysis",
         className="mr-1",
-        color="info"
+        color="success"
     )
 
 
@@ -80,7 +80,7 @@ def get_row(deptos, indicator):
         html.H3(indicator),
         dbc.Row([
             dbc.Col(html.Div([dcc.Graph(figure=graph_depto), dcc.Graph(figure=graph)])),
-            dbc.Col(html.Div(id='deforestation-level-municipality-output-map'))
+            dbc.Col(html.Div(id='deforestation-level-detailed-output-map'))
         ]),
         build_slider(years),
         html.Br(),
@@ -126,7 +126,7 @@ def build_slider(years):
         dbc.Col(),
         dbc.Col([
             dcc.Slider(
-                id='deforestation-level-municipality-slider',
+                id='deforestation-level-detailed-slider',
                 min=years.min(),
                 max=years.max(),
                 value=years.min(),
@@ -137,14 +137,14 @@ def build_slider(years):
 
 def register_callback(app):
     @app.callback(
-        Output('municipality-output-map', 'children'),
+        Output('detailed-output-map', 'children'),
         [
-            Input('button-municipality-analysis', 'n_clicks')
+            Input('button-detailed-analysis', 'n_clicks')
 
         ],
         [
-            State('dropdown-municipality-analysis-departamentos-filter', 'value'),
-            State('dropdown-municipality-analysis-indicator-filter', 'value')
+            State('dropdown-detailed-analysis-departamentos-filter', 'value'),
+            State('dropdown-detailed-analysis-indicator-filter', 'value')
         ]
 
     )
@@ -155,8 +155,8 @@ def register_callback(app):
             return get_row(deptos, indicator)
 
     @app.callback(
-        Output('deforestation-level-municipality-output-map', 'children'),
-        [Input('deforestation-level-municipality-slider', 'value')])
+        Output('deforestation-level-detailed-output-map', 'children'),
+        [Input('deforestation-level-detailed-slider', 'value')])
     def update_output(value):
         if value is not None:
             return build_map(value, selected_indicator)
