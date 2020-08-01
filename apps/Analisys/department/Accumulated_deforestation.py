@@ -7,15 +7,15 @@ from dash.dependencies import Input, Output
 import geopandas
 import json
 
-from apps.Analisys import Analysis_data_handler as data_h
+from apps.Analisys.department import Analysis_data_handler as data_h
 
 data_dic = {}
 
 
 def register_callback(app):
     @app.callback(
-        Output('deforestation-level-output-map', 'children'),
-        [Input('deforestation-level-slider', 'value')])
+        Output('accumulated-deforestation-level-output-map', 'children'),
+        [Input('accumulated-deforestation-level-slider', 'value')])
     def update_output(value):
         if value is not None:
             return build_map(value)
@@ -23,16 +23,16 @@ def register_callback(app):
 
 def get_row():
     indicator = 'DEFORESTACION'
-    deforestation_data = data_h.get_indicator_grouped_by_departamento(indicator)
+    deforestation_data = data_h.get_accumulated_indicator_depto(indicator)
     deforestation_graph = px.line(deforestation_data, x='Año', y=indicator, color='Departamento')
     years = deforestation_data['Año'].unique().astype(int)
     build_data_map(deforestation_data, years)
 
     return html.Div([
-        html.H3("Niveles de deforestación"),
+        html.H3("Deforestación acumulada - Departamento"),
         dbc.Row([
             dbc.Col(dcc.Graph(figure=deforestation_graph)),
-            dbc.Col(html.Div(id='deforestation-level-output-map'))
+            dbc.Col(html.Div(id='accumulated-deforestation-level-output-map'))
         ]),
         build_slider(years),
         html.Br(),
@@ -53,19 +53,19 @@ def build_data_map(data, years):
 def build_map(year):
     df_geo = data_dic[year]
     map = px.choropleth_mapbox(pd.json_normalize(json.loads(df_geo.to_json())['features']),  # Data
-                                color='properties.DEFORESTACION',  # Column giving the color intensity of the region
-                                locations='properties.LOCATION',
-                                featureidkey='properties.LOCATION',
-                                geojson=json.loads(df_geo.to_json()),  # The GeoJSON file
-                                zoom=6,  # Zoom
-                                mapbox_style="carto-positron",
-                                # Mapbox style, for different maps you need a Mapbox account and a token
-                                center={"lat": 7.5, "lon": -75.133},  # Center
-                                color_continuous_scale="aggrnyl",  # Color Scheme
-                                opacity=0.5,  # Opacity of the map
-                                width=900,
-                                height=800
-                                )
+                               color='properties.DEFORESTACION',  # Column giving the color intensity of the region
+                               locations='properties.LOCATION',
+                               featureidkey='properties.LOCATION',
+                               geojson=json.loads(df_geo.to_json()),  # The GeoJSON file
+                               zoom=6,  # Zoom
+                               mapbox_style="carto-positron",
+                               # Mapbox style, for different maps you need a Mapbox account and a token
+                               center={"lat": 7.5, "lon": -75.133},  # Center
+                               color_continuous_scale="aggrnyl",  # Color Scheme
+                               opacity=0.5,  # Opacity of the map
+                               width=900,
+                               height=800
+                               )
     return dcc.Graph(figure=map)
 
 
@@ -78,7 +78,7 @@ def build_slider(years):
         dbc.Col(),
         dbc.Col([
             dcc.Slider(
-                id='deforestation-level-slider',
+                id='accumulated-deforestation-level-slider',
                 min=years.min(),
                 max=years.max(),
                 value=years.min(),

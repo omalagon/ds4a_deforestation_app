@@ -19,8 +19,8 @@ def get_connection():
                             password=os.environ.get('DB_PSW'))
 
 
-def get_indicator_grouped_by_departamento(indicator):
-    if indicator in indicators_cache:
+def get_indicator_grouped_by_departamento(indicator, deptos=None, cache=True):
+    if indicator in indicators_cache and cache:
         return indicators_cache[indicator]
 
     query = str("""
@@ -37,7 +37,15 @@ def get_indicator_grouped_by_departamento(indicator):
     order by data_year, depto_id, depto_nombre
     """).format(indicator)
     data = pd.read_sql_query(query, get_connection())
-    set_indicator(indicator, data)
+
+    if deptos:
+        if type(deptos) == str:
+            deptos = [deptos]
+
+        data = data[data['Departamento'].isin(deptos)]
+
+    if cache:
+        set_indicator(indicator, data)
 
     return data
 
@@ -109,3 +117,24 @@ def calculate_forest_loss_percentage(row, forest_2002):
     row['PERDIDA_BOSQUE'] = float(
         row['DEFORESTACION'] / forest_2002[forest_2002['Departamento'] == row['Departamento']]['TOTAL_BOSQUE'] * 100)
     return row
+
+
+def read_complete_df():
+    indicator = 'CORRELATION'
+    if indicator in indicators_cache:
+        return indicators_cache[indicator]
+
+    query = """
+    with geo as (
+    select m.departamento_id as depto_id, d.nombre as depto_nombre, m.id as mun_id, m.nombre as mun_nombre
+    from ds4a.municipio m join ds4a.departamento d 
+    on m.departamento_id = d.id)
+
+    select data_year, depto_id, depto_nombre, mun_id, mun_nombre, data_category, data_value
+    from ds4a.datos da join geo g
+    on da.municipio_id = g.mun_id
+    """
+    data = pd.read_sql_query(query, get_connection())
+    set_indicator(indicator, data)
+
+    return data

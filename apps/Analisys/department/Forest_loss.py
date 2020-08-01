@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output
 import geopandas
 import json
 
-from apps.Analisys import Analysis_data_handler as data_h
+from apps.Analisys.department import Analysis_data_handler as data_h
 
 data_dic = {}
 
@@ -28,7 +28,7 @@ def get_row():
     build_data_map(forest_loss_data, years)
 
     return html.Div([
-        html.H3("% Perdida de bosque"),
+        html.H3("% Perdida de bosque - Departamento"),
         dbc.Row([
             dbc.Col(dcc.Graph(figure=forest_loss_graph)),
             dbc.Col(html.Div(id='forest-loss-output-map'))
