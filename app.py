@@ -27,6 +27,8 @@ server = app.server
 #We need this for function callbacks not present in the app.layout
 app.config.suppress_callback_exceptions = True
 
+app.title = 'Deforestation App'
+
 app.layout = html.Div(
     [
         dcc.Location(id='url', refresh=False),
