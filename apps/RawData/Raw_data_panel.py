@@ -36,7 +36,9 @@ main = dbc.Container(
         html.P("Seleccione el conjunto de datos que desea visualizar en el menú 'Datos'. "),
         dbc.Alert("Solo se muestra una parte del archivo, para más detalle lo puede "
                   "descargar en el correspondiente enlace", color='warning'),
-        html.Div(id='raw_content')
+        dbc.Spinner(
+            html.Div(id='raw_content'),
+            color="success", spinner_style={"width": "3rem", "height": "3rem"})
     ]
 )
 
