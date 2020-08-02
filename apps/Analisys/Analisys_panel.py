@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-from apps.Analisys.predefined import Deforestation_level, Forest_loss, Accumulated_deforestation, Correlation
+from apps.Analisys.predefined import Deforestation_level, Forest_loss, Accumulated_deforestation, Correlation, Cluster
 from apps.Analisys.detailed import Dynamic_indicator_map as Dynamic_municipality_indicator_map
 
 main = html.Div(
@@ -40,7 +40,8 @@ def register_callback(app):
                     Deforestation_level.get_row(),
                     Accumulated_deforestation.get_row(),
                     Forest_loss.get_row(),
-                    Correlation.get_row()
+                    Correlation.get_row(),
+                    Cluster.get_row()
                 ]
                 return html.Div(rows)
             elif active_tab == "detailed":
