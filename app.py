@@ -18,6 +18,7 @@ from apps.Analisys.predefined.Deforestation_level import register_callback as re
 from apps.Analisys.predefined.Accumulated_deforestation import register_callback as register_accumulated_deforestation_callback
 from apps.Analisys.predefined.Forest_loss import register_callback as register_forest_loss_callback
 from apps.Analisys.detailed.Dynamic_indicator_map import register_callback as register_dynaimic_indicator_map_municipality_callback
+from apps.Prediction.Prediction_panel import register_callback as register_calculator_callback
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.FLATLY])
 server = app.server
@@ -42,6 +43,9 @@ register_accumulated_deforestation_callback(app)
 register_forest_loss_callback(app)
 # Dynamic filter callback
 register_dynaimic_indicator_map_municipality_callback(app)
+# Calculator callback
+register_calculator_callback(app)
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
