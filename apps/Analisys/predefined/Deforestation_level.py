@@ -6,7 +6,7 @@ import plotly.express as px
 from dash.dependencies import Input, Output
 import geopandas
 import json
-
+from lib.map_builder import build_map_figure
 from apps.Analisys.predefined import Analysis_data_handler as data_h
 
 data_dic = {}
@@ -52,21 +52,10 @@ def build_data_map(data, years):
 
 def build_map(year):
     df_geo = data_dic[year]
-    map = px.choropleth_mapbox(pd.json_normalize(json.loads(df_geo.to_json())['features']),  # Data
-                                color='properties.DEFORESTACION',  # Column giving the color intensity of the region
-                                locations='properties.LOCATION',
-                                featureidkey='properties.LOCATION',
-                                geojson=json.loads(df_geo.to_json()),  # The GeoJSON file
-                                zoom=6,  # Zoom
-                                mapbox_style="carto-positron",
-                                # Mapbox style, for different maps you need a Mapbox account and a token
-                                center={"lat": 7.5, "lon": -75.133},  # Center
-                                color_continuous_scale="aggrnyl",  # Color Scheme
-                                opacity=0.5,  # Opacity of the map
-                                width=900,
-                                height=800
-                                )
-    return dcc.Graph(figure=map)
+    map_figure = build_map_figure(pd.json_normalize(json.loads(df_geo.to_json())['features']),
+                                  json.loads(df_geo.to_json()),
+                                  "DEFORESTACION")
+    return dcc.Graph(figure=map_figure)
 
 
 def build_slider(years):

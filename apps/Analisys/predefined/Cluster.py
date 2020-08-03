@@ -5,22 +5,27 @@ import pandas as pd
 from dash.dependencies import Input, Output
 
 cluster_dict = {
-    '2001': "../../assets/carolina.jpeg",
-    '2002': "../../assets/carlos.jpeg",
-    '2003': "../../assets/dario.jpeg",
-    '2004': "../../assets/manuel.jpeg",
-    '2005': "../../assets/oscar.png"
+    '2002': "../../assets/cluster_2002.png",
+    '2004': "../../assets/cluster_2004.png",
+    '2006': "../../assets/cluster_2006.png",
+    '2008': "../../assets/cluster_2008.png",
+    '2010': "../../assets/cluster_2010.png",
+    '2012': "../../assets/cluster_2012.png",
+    '2013': "../../assets/cluster_2013.png",
+    '2014': "../../assets/cluster_2014.png",
+    '2015': "../../assets/cluster_2015.png",
+    '2016': "../../assets/cluster_2016.png",
+    '2017': "../../assets/cluster_2017.png",
 }
 
 
 def get_row():
     return html.Div([
-        html.H3("Cluster"),
+        html.H3("Autocorrelación espacial"),
         dbc.Container([
-            dbc.Row([
-                dbc.Container(id="cluster-image", style={'textAlign': 'center'}),
-                dbc.Container(build_slider(pd.DataFrame.from_dict(cluster_dict.keys()).astype(int)[0]))
-            ])
+            dbc.Row(dbc.Container(id="cluster-image", style={'textAlign': 'center'})),
+            html.Br(), html.Br(),
+            dbc.Row(dbc.Container(build_slider(pd.DataFrame.from_dict(cluster_dict.keys()).astype(int)[0])))
         ]),
         html.Br()
     ])
@@ -31,7 +36,7 @@ def build_slider(years):
     for year in years:
         years_dict[int(year)] = str(year)
 
-    return dcc.Slider (
+    return dcc.Slider(
         id='cluster-slider',
         min=years.min(),
         max=years.max(),

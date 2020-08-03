@@ -9,6 +9,7 @@ import json
 
 from apps.Analisys.detailed import Analysis_data_handler as data_h
 from apps.Analisys.predefined import Analysis_data_handler as data_h_depto
+from lib.map_builder import build_map_figure
 
 data_dic = {}
 selected_indicator = None
@@ -100,21 +101,10 @@ def build_data_map(data, years, indicator):
 
 def build_map(year, indicator):
     df_geo = data_dic[year]
-    map = px.choropleth_mapbox(pd.json_normalize(json.loads(df_geo.to_json())['features']),  # Data
-                                color=f"properties.{indicator}",  # Column giving the color intensity of the region
-                                locations='properties.LOCATION',
-                                featureidkey='properties.LOCATION',
-                                geojson=json.loads(df_geo.to_json()),  # The GeoJSON file
-                                zoom=6,  # Zoom
-                                mapbox_style="carto-positron",
-                                # Mapbox style, for different maps you need a Mapbox account and a token
-                                center={"lat": 7.5, "lon": -75.133},  # Center
-                                color_continuous_scale="jet",  # Color Scheme
-                                opacity=0.5,  # Opacity of the map
-                                width=900,
-                                height=800
-                                )
-    return dcc.Graph(figure=map)
+    map_figure = build_map_figure(pd.json_normalize(json.loads(df_geo.to_json())['features']),
+                           json.loads(df_geo.to_json()),
+                           indicator)
+    return dcc.Graph(figure=map_figure)
 
 
 def build_slider(years):
